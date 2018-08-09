@@ -14,9 +14,9 @@
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
         <v-spacer></v-spacer>
-        <img class="left-imgs" @click="showChartModal" src="/assets/app-images/graph-icon.png">
+        <img class="left-imgs" @click="showChartModal" src="/assets/app-images/graph-icon-2.png">
         <v-spacer></v-spacer>
-        <img class="left-imgs" @click="showCalendarModal" src="/assets/app-images/calendar-icon.png">
+        <img class="left-imgs" @click="showCalendarModal" src="/assets/app-images/calendar-icon-2.png">
         <v-tabs centered
           slot="extension"
           slider-color="cyan"

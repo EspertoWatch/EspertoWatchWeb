@@ -5,13 +5,13 @@
 	    <v-card style="padding-top: 20px; padding-bottom: 20px">
 	      <v-layout row class="data-row">
 	        <div class="circle">
-	          <img class="circle-icon-calendar" src="/assets/app-images/step-nav.png"/>
+	          <img class="circle-icon-calendar" src="/assets/app-images/step-nav-2.png"/>
 	        </div>
 	        <p class="data-text"> {{date | getDataText(stepData)}} </p>
 	      </v-layout>
 	      <v-layout row class="data-row">
 	        <div class="circle">
-	          <img class="circle-icon-calendar" src="/assets/app-images/heart-nav.png"/>
+	          <img class="circle-icon-calendar" src="/assets/app-images/heart-nav-2.png"/>
 	        </div>
 	        <p class="data-text"> {{date | getDataText(heartRateData)}} </p>
 	      </v-layout>
