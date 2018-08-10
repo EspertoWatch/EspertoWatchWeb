@@ -72,7 +72,6 @@ export const store = new Vuex.Store({
 			//todo: remove hardcoded vals
 			const today = state.stepCountData.currentSteps;
 			const yesterday = state.stepCountData.totalDailySteps[moment().subtract(1, 'day').format("YYYY-MM-DD")] ? Math.round(state.stepCountData.totalDailySteps[moment().subtract(1, 'day').format("YYYY-MM-DD")], 1) : 0;
-
 			let thisWkSum = state.stepCountData.currentSteps;
 			let thisWkCounter = 1;
 			for(let i = 1; i < 6; i ++){
@@ -209,7 +208,7 @@ export const store = new Vuex.Store({
 		},
 		getWeekHR: state => {
 			let weekHR = [];
-			for(let i = 0; i < 6; i ++){
+			for(let i = 0; i < 7; i ++){
 				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
 				const hrVal = state.heartRateData.avgDailyHR[date] ? state.heartRateData.avgDailyHR[date] : 0;
 				weekHR.unshift(hrVal);

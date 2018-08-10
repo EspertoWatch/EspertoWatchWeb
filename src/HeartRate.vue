@@ -8,10 +8,10 @@
           :weekData="getWeekHR"
           graph-type="Line"
           time-period="Today"
-          includes="Goal Line"
           :graph-type-choices="['Bar', 'Line']"
           :time-period-choices="['Today', 'This Week']"
           chartColor='#f87979'
+          labelName="Heart Rate (BPM)"
         />
       </v-card>
     </v-layout>

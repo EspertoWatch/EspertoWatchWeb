@@ -1,28 +1,13 @@
 <script>
-	import { Bar } from 'vue-chartjs'
+	import { Bar, mixins } from 'vue-chartjs'
+	const { reactiveProp } = mixins
 
 	export default {
 	  name: 'BarChart',
 	  extends: Bar,
-	  props: ['data', 'options'],
-	  watch: {
-	    'options': {
-	      handler (newOption, oldOption) {
-	        this.$data._chart.destroy()
-	        this.renderChart(this.data, this.options)
-	      },
-	      deep: true
-	    },
-			'data': {
-	      handler (newData, oldData) {
-	        this.$data._chart.destroy()
-	        this.renderChart(this.data, this.options)
-	      },
-	      deep: true
-	    }
-	  },
-	  mounted () {
-	    this.renderChart(this.data, this.options)
-	  }
+		mixins: [reactiveProp],
+    mounted () {
+      this.renderChart(this.chartData, this.options)
+    }
 	}
 </script>

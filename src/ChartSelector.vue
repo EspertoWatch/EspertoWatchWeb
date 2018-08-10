@@ -1,7 +1,7 @@
 <template>
     <div style="margin-left: 20px; margin-right: 20px;">
-        <BarChart v-if="graphType === 'Bar'" :height="175" :data="chartData" :options="chartOptions" class="chart"></BarChart>
-        <LineChart v-else-if="graphType ==='Line'" :height="175" :data="chartData" :options="chartOptions" class="chart"></LineChart>
+        <BarChart v-if="graphStructure === 'Bar'" :height="175" :chartData="chartData" :options="chartOptions" class="chart"></BarChart>
+        <LineChart v-else-if="graphStructure ==='Line'" :height="175" :chartData="chartData" :options="chartOptions" class="chart"></LineChart>
         <v-layout row wrap>
             <v-flex xs4>
             <p class="input-label">Select Graph Type: </p>
@@ -9,7 +9,7 @@
             <v-flex xs7>
             <v-select
                 :items="graphTypeChoices"
-                v-model="graphType"
+                v-model="graphStructure"
             ></v-select>
             </v-flex>
             <v-flex xs4>
@@ -18,7 +18,7 @@
             <v-flex xs7>
             <v-select
                 :items="timePeriodChoices"
-                v-model="timePeriod"
+                v-model="timeFrame"
             ></v-select>
             </v-flex>
         </v-layout>
@@ -33,22 +33,23 @@ export default {
   props: {
       graphType: String,
       timePeriod: String,
-      includes: String,
       graphTypeChoices: Array,
       timePeriodChoices: Array,
       dayData: Array,
       weekData: Array,
       monthData: Array,
-      chartColor: String
+      chartColor: String,
+      labelName: String
+  },
+  data () {
+    return {
+      graphStructure: this.graphType,
+      timeFrame: this.timePeriod
+    }
   },
   computed: {
     chartOptions(){
       return{
-        title: {
-          display: true,
-          text: `${this.timePeriod}'s Graph`,
-          fontSize: 20
-        },
         scales: {
             yAxes: [{
                 ticks: {
@@ -63,13 +64,13 @@ export default {
           labels: this.getLabels(),
           datasets: [
               {
-                  label: 'Fake label',
+                  label: this.labelName,
                   backgroundColor: this.chartColor,
                   data: this.getData()
               }
           ]
       }
-    }
+    },
   },
   components: {
     LineChart,
@@ -77,10 +78,10 @@ export default {
   },
   methods: {
     getData(){
-      if(this.timePeriod === "Today"){
+      if(this.timeFrame === "Today"){
         return this.dayData;
       }
-      else if(this.timePeriod === "This Week"){
+      else if(this.timeFrame === "This Week"){
         return this.weekData;
       }
       else{
@@ -89,16 +90,16 @@ export default {
     },
     getLabels(){
       let n;
-      if(this.timePeriod === "Today"){
+      if(this.timeFrame === "Today"){
         n = this.dayData.length;
       }
-      else if(this.timePeriod === "This Week"){
+      else if(this.timeFrame === "This Week"){
         n = this.weekData.length;
       }
       else{
         n = this.monthData.length;
       }
-      return Array.from(Array(n).keys());
+      return Array.apply(null, {length: n}).map(Number.call, Number);
     }
   }
 }

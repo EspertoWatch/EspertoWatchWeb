@@ -8,10 +8,10 @@
           :monthData="getMonthSteps"
           graph-type="Bar"
           time-period="This Week"
-          includes="Goal Line"
           :graph-type-choices="['Bar', 'Line']"
           :time-period-choices="['This Week', 'This Month']"
           chartColor="#0000FF"
+          labelName="Step Count"
         />
       </v-card>
     </v-layout>

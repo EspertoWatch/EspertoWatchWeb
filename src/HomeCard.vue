@@ -54,9 +54,9 @@
     <v-dialog v-model="calendarModal" max-width="400">
       <CalendarView></CalendarView>
     </v-dialog>
-    <v-dialog v-model="chartModal" max-width="500">
+    <v-dialog v-model="chartModal" max-width="400">
         <v-card style="padding-bottom: 50px;">
-            <BarChart :data="chartMetaData" :options="chartOptions" class="chart"></BarChart>
+            <BarChart :chartData="getChartData()" :options="getChartOptions()" class="chart"></BarChart>
         </v-card>
     </v-dialog>
   </div>
@@ -78,36 +78,6 @@ export default {
     chartColor: String,
     chartTitle: String
   },
-  computed: {
-      chartMetaData(){
-          return {
-              labels: this.getLabels(),
-              datasets: [
-                  {
-                      label: this.title,
-                      backgroundColor: this.chartColor,
-                      data: this.chartData
-                  }
-              ]
-          }
-      },
-      chartOptions(){
-          return{
-              title: {
-                  display: true,
-                  text: this.chartTitle,
-                  fontSize: 20
-              },
-              scales: {
-                  yAxes: [{
-                      ticks: {
-                          beginAtZero:true
-                      }
-                  }]
-              }
-          }
-      }
-  },
   data () {
     return {
       tab: null,
@@ -122,10 +92,6 @@ export default {
     showChartModal(){
       this.chartModal = true;
     },
-    getLabels(){
-      const n = this.chartData.length; 
-      return Array.from(Array(n).keys());
-    },
     showUpIcon(item){
       if(item.title === "This Month"){
         return false;
@@ -137,6 +103,40 @@ export default {
         return "red";
       }
       return item.lastInterval > 0;
+    },
+    getLabels(){
+      const n = this.chartData.length;
+      return Array.apply(null, {length: n}).map(Number.call, Number);
+    },
+    getChartOptions(){
+      const options = {
+            title: {
+                display: true,
+                text: this.chartTitle,
+                fontSize: 20
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        };
+        return options;
+    },
+    getChartData(){
+      const data =  {
+          labels: this.getLabels(),
+          datasets: [
+              {
+                  label: this.title,
+                  backgroundColor: this.chartColor,
+                  data: this.chartData
+              }
+          ]
+      };
+      return data;
     }
   },
   filters:{
