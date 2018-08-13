@@ -23,11 +23,22 @@
           </v-tab>
         </v-tabs>
     </v-toolbar>
-    <v-card height=225px>
+    <v-card height=250px>
       <v-tabs-items v-model="tab">
         <v-tab-item v-for="tab in tabs" :key="tab.title" :id="'tab-' + tab.title">
             <div class="main-value-container">
-              <p class="main-value">{{tab.mainValue + " " + tab.unit}}</p>
+              <v-layout row justify-space-around>
+                <v-flex xs4>
+                  <p class="main-value" style="font-size: 4.4rem !important;">{{tab.mainValue}}</p>
+                  <p style="font-size: 3.6rem !important;" class="main-value">{{tab.unit}}</p>
+                </v-flex>
+                <v-flex xs7>
+                  <div style="margin-top: 30px;" v-if="title === 'My Step Count'">
+                    <StepArchMeter scale="0.6" :percentage1="getPercentageForStep(tab.mainValue, 20)" :percentage2="getPercentageForStep(tab.mainValue, 40)" :percentage3="getPercentageForStep(tab.mainValue, 60)" :percentage4="getPercentageForStep(tab.mainValue, 80)" :percentage5="getPercentageForStep(tab.mainValue, 100)"/>
+                    <p style="font-size: 1.5rem">Goal {{Math.round((tab.mainValue/stepGoal)*100, 1)}}% complete!</p>
+                  </div>
+                </v-flex>
+               </v-layout>
             </div>
             <div class="divider-container">
               <v-layout row justify-center style="margin-bottom: 30px">
@@ -39,7 +50,7 @@
                      <img style="margin-top: -5px" src="/assets/app-images/down_arrow.png"></img>
                   </div>
                 </v-flex>
-                <v-flex xs8>
+                <v-flex xs6>
                   <p class="sub-text"> {{tab | getIntervalString}}</p>
                 </v-flex>
               </v-layout>
@@ -62,6 +73,7 @@
 import CalendarView from './CalendarView.vue'
 import LineChart from './Charts/LineChart.vue'
 import BarChart from './Charts/BarChart.vue'
+import StepArchMeter from './StepArchMeter.vue'
 
 export default {
   name: 'homeCard',
@@ -72,7 +84,8 @@ export default {
     link: String,
     chartData: Array,
     themeColor: String,
-    chartTitle: String
+    chartTitle: String,
+    stepGoal: Number
   },
   data () {
     return {
@@ -133,6 +146,10 @@ export default {
           ]
       };
       return data;
+    },
+    getPercentageForStep(stepValue, basePercentage){
+        const percentage = Math.min(Math.max(0, (((stepValue/this.stepGoal)*100 - (basePercentage-20))/20)*100), 100);
+        return percentage + "%";
     }
   },
   filters:{
@@ -156,7 +173,8 @@ export default {
   components: {
     CalendarView,
     LineChart,
-    BarChart
+    BarChart,
+    StepArchMeter
   }
 }
 </script>
@@ -189,19 +207,22 @@ export default {
   }
   .main-value-container{
     height: 150px;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
   .divider-container{
     margin-right: 10px;
     margin-left: 10px;
-    height: 50px;
   }
   .main-value{
-    font-size: 3.2rem !important;
     font-weight: 545;
-    line-height: 150px;
+    line-height: 75px;
+    margin-bottom: 0px;
   }
   .sub-text{
     font-size: 2.0rem !important;
+    line-height: 28px;
+    margin-bottom: 0px;
   }
   .chart{
     padding-top: 20px;

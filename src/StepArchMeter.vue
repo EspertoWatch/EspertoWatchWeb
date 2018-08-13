@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<svg version="1.1" id="step1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75px" height="75px" viewBox="0 0 500 700" >
+		<svg version="1.1" id="step1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :width="sizeValOne" :height="sizeValOne" viewBox="0 0 500 700" >
           <linearGradient id="lg1" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stop-opacity="1" stop-color="black"/>
               <stop :offset="percentage1" stop-opacity="1" stop-color="black"/>
@@ -16,7 +16,7 @@
         C216.162,245.069,213.798,246.352,220.752,225.463z M129.029,293.132c13.547,171.234,175.47,103.231,87.63-26.427
         C188.854,276.228,164.304,282.292,129.029,293.132z" fill="url(#lg1)" transform="rotate(45) translate(325, -225)"/>
         </svg>
-        <svg version="1.1" id="step2" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75px" height="75px" viewBox="0 0 500 700" >
+        <svg version="1.1" id="step2" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :width="sizeValOne" :height="sizeValOne" viewBox="0 0 500 700" >
           <linearGradient id="lg2" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stop-opacity="1" stop-color="black"/>
               <stop :offset="percentage2" stop-opacity="1" stop-color="black"/>
@@ -33,7 +33,7 @@
         C188.854,276.228,164.304,282.292,129.029,293.132z" fill="url(#lg2)" transform="rotate(
       70) translate(75, -400)"/>
         </svg>
-        <svg version="1.1" id="step3" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60px" height="75px" viewBox="0 0 500 700" >
+        <svg version="1.1" id="step3" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :width="sizeValTwo" :height="sizeValOne" viewBox="0 0 500 700" >
           <linearGradient id="lg3" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stop-opacity="1" stop-color="black"/>
               <stop :offset="percentage3" stop-opacity="1" stop-color="black"/>
@@ -50,7 +50,7 @@
         C188.854,276.228,164.304,282.292,129.029,293.132z" fill="url(#lg3)" transform="rotate(
       90) translate(-50, -500)"/>
         </svg>
-        <svg version="1.1" id="step4" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60px" height="75px" viewBox="0 0 500 700" >
+        <svg version="1.1" id="step4" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :width="sizeValTwo" :height="sizeValOne" viewBox="0 0 500 700" >
           <linearGradient id="lg4" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stop-opacity="1" stop-color="black"/>
               <stop :offset="percentage4" stop-opacity="1" stop-color="black"/>
@@ -67,7 +67,7 @@
         C188.854,276.228,164.304,282.292,129.029,293.132z" fill="url(#lg4)" transform="rotate(
       110) translate(-75, -575)"/>
         </svg>
-        <svg version="1.1" id="step5" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="75px" height="75px" viewBox="0 0 500 700" >
+        <svg version="1.1" id="step5" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" :width="sizeValOne" :height="sizeValOne" viewBox="0 0 500 700" >
           <linearGradient id="lg5" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stop-opacity="1" stop-color="black"/>
               <stop :offset="percentage5" stop-opacity="1" stop-color="black"/>
@@ -90,12 +90,21 @@
 export default{
 	name: 'StepArchMeter',
 	props: {
-		percentage1: Number,
-		percentage2: Number,
-		percentage3: Number,
-		percentage4: Number,
-		percentage5: Number,
+		percentage1: String,
+		percentage2: String,
+		percentage3: String,
+		percentage4: String,
+		percentage5: String,
+    scale: String
 	},
+  computed: {
+    sizeValOne(){
+      return this.scale*75 + "px";
+    },
+    sizeValTwo(){
+      return this.scale*60 + "px";
+    },
+  },
 }
 </script
 
