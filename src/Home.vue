@@ -20,10 +20,10 @@
     </v-layout>
     <v-layout row justify-space-around>
       <v-flex xs5>
-        <HomeCard icon-src="/assets/app-images/step-nav-2.png" :chartData="getMonthSteps.slice(Math.max(getMonthSteps.length - 7, 0))" chartTitle="This Week's Step Count" title="Step Count" v-bind:tabs="getHomeCardStepData" link="StepCount" chartColor='#0000FF'></HomeCard>
+        <HomeCard :chartData="getMonthSteps.slice(Math.max(getMonthSteps.length - 7, 0))" chartTitle="This Week's Step Count" title="My Step Count" v-bind:tabs="getHomeCardStepData" link="StepCount" themeColor='#0000FF'></HomeCard>
       </v-flex>
       <v-flex xs5>
-        <HomeCard icon-src="/assets/app-images/heart-nav-2.png" :chartData="getTodayHR" chartTitle="Today's Heart Rate" title="Heart Rate (BPM)" v-bind:tabs="getHomeCardHeartRateData" link="HeartRate" chartColor='#f87979'></HomeCard>
+        <HomeCard :chartData="getTodayHR" chartTitle="Today's Heart Rate" title="My Heart Rate" v-bind:tabs="getHomeCardHeartRateData" link="HeartRate" themeColor='#f87979'></HomeCard>
       </v-flex>
     </v-layout>
   </div>

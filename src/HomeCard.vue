@@ -1,30 +1,24 @@
 <template>
   <div id="homeCard">
     <v-toolbar extension-height=40 style="backgroundColor: #fff">
-        <v-layout justify-space-around>
-          <div class="circle">
-            <router-link :to="link"><img class="circle-icon" v-bind:src="iconSrc"></router-link>
-          </div>
+        <v-layout row justify-space-around>
+          <v-toolbar-title class="title" v-bind:style="{ color: themeColor }">{{title}}</v-toolbar-title>
+          <v-flex xs3>
+            <v-layout row justify-space-around>
+              <img class="right-imgs" @click="showChartModal" src="/assets/app-images/graph-icon-2.png">
+              <img class="right-imgs" @click="showCalendarModal" src="/assets/app-images/calendar-icon-2.png">
+              <v-flex xs1/>
+            </v-layout>
+          </v-flex>
         </v-layout>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-toolbar-title class="title">{{title}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <img class="left-imgs" @click="showChartModal" src="/assets/app-images/graph-icon-2.png">
-        <v-spacer></v-spacer>
-        <img class="left-imgs" @click="showCalendarModal" src="/assets/app-images/calendar-icon-2.png">
         <v-tabs centered
           slot="extension"
-          slider-color="cyan"
+          slider-color="blue"
           slider-width=2px
           height=40px
           v-model="tab"
         >
-          <v-tab v-for="tab in tabs" :key="tab.title" :href="'#tab-' + tab.title">
+          <v-tab v-for="tab in tabs" :key="tab.title" :href="'#tab-' + tab.title" style="font-size: 1.2em">
             {{tab.title}}
           </v-tab>
         </v-tabs>
@@ -36,16 +30,18 @@
               <p class="main-value">{{tab.mainValue + " " + tab.unit}}</p>
             </div>
             <div class="divider-container">
-              <v-layout row justify-center style="margin-bottom: 10px">
-                <v-flex xs1 v-if="showUpIcon(tab) !== false">
+              <v-layout row justify-center style="margin-bottom: 30px">
+                <v-flex xs2 v-if="showUpIcon(tab) !== false">
                   <div v-if="showUpIcon(tab) === 'green'">
-                    <v-icon large color="green darken-2">arrow_drop_up</v-icon>
+                    <img src="/assets/app-images/up_arrow.png"></img>
                   </div>
                   <div v-else-if="showUpIcon(tab) === 'red'">
-                    <v-icon large color="red darken-2">arrow_drop_down</v-icon>
+                     <img style="margin-top: -5px" src="/assets/app-images/down_arrow.png"></img>
                   </div>
                 </v-flex>
-                <p class="sub-text"> {{tab | getIntervalString}}</p>
+                <v-flex xs8>
+                  <p class="sub-text"> {{tab | getIntervalString}}</p>
+                </v-flex>
               </v-layout>
             </div>
         </v-tab-item>
@@ -75,7 +71,7 @@ export default {
     tabs: Array,
     link: String,
     chartData: Array,
-    chartColor: String,
+    themeColor: String,
     chartTitle: String
   },
   data () {
@@ -131,7 +127,7 @@ export default {
           datasets: [
               {
                   label: this.title,
-                  backgroundColor: this.chartColor,
+                  backgroundColor: this.themeColor,
                   data: this.chartData
               }
           ]
@@ -181,12 +177,12 @@ export default {
     width: 20px;
   }
   .title{
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
     font-weight: 525;
     margin: auto;
   }
-  .left-imgs{
-    height: 20px;
+  .right-imgs{
+    height: 36px;
   }
   .title-container{
     align-items: center
@@ -205,9 +201,7 @@ export default {
     line-height: 150px;
   }
   .sub-text{
-    font-size: 1.5rem !important;
-    margin-right: 10px;
-    margin-left: 10px;
+    font-size: 2.0rem !important;
   }
   .chart{
     padding-top: 20px;

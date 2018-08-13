@@ -19,7 +19,7 @@
           <router-link to="StepCount"><img src="/assets/app-images/step-nav-2.png"></router-link>
           <router-link to="HeartRate"><img src="/assets/app-images/heart-nav-2.png"></router-link>
           <div style=" display: flex; flex-direction: column; justify-content: center;">
-            <a @click='logout'>Logout</a>
+            <a @click='logout' class="logout-text">Logout</a>
           </div>
         </v-layout>
       </div>
@@ -84,16 +84,20 @@ a {
   margin-top: 5px;
 }
 .esperto-logo-text{
-  font-size: 1.5em;
-  margin-left: 5px;
-  margin-bottom: 0px;
-  font-weight: 400 !important;
+    font-size: 1.5em;
+    margin-left: 10px;
+    margin-bottom: 0px;
+    font-weight: 400 !important;
 }
 .vert-center{
   margin-top: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.logout-text{
+  color: #0A7BF6;
+  font-size: 1.3em;
 }
 
 </style>
