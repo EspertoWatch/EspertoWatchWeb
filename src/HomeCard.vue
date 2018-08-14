@@ -1,51 +1,66 @@
 <template>
   <div id="homeCard">
     <v-toolbar extension-height=40 style="backgroundColor: #fff">
-        <v-layout justify-space-around>
-          <div class="circle">
-            <router-link :to="link"><img class="circle-icon" v-bind:src="iconSrc"></router-link>
-          </div>
+        <v-layout row justify-space-around>
+          <v-toolbar-title class="title" v-bind:style="{ color: themeColor }">{{title}}</v-toolbar-title>
+          <v-flex xs3>
+            <v-layout row justify-space-around>
+              <img class="right-imgs" @click="showChartModal" src="/assets/app-images/graph-icon-2.png">
+              <img class="right-imgs" @click="showCalendarModal" src="/assets/app-images/calendar-icon-2.png">
+              <v-flex xs1/>
+            </v-layout>
+          </v-flex>
         </v-layout>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-toolbar-title class="title">{{title}}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <img class="left-imgs" @click="showChartModal" src="/assets/app-images/graph-icon-2.png">
-        <v-spacer></v-spacer>
-        <img class="left-imgs" @click="showCalendarModal" src="/assets/app-images/calendar-icon-2.png">
         <v-tabs centered
           slot="extension"
-          slider-color="cyan"
+          slider-color="blue"
           slider-width=2px
           height=40px
           v-model="tab"
         >
-          <v-tab v-for="tab in tabs" :key="tab.title" :href="'#tab-' + tab.title">
+          <v-tab v-for="tab in tabs" :key="tab.title" :href="'#tab-' + tab.title" style="font-size: 1.2em">
             {{tab.title}}
           </v-tab>
         </v-tabs>
     </v-toolbar>
-    <v-card height=225px>
+    <v-card height=250px>
       <v-tabs-items v-model="tab">
         <v-tab-item v-for="tab in tabs" :key="tab.title" :id="'tab-' + tab.title">
             <div class="main-value-container">
-              <p class="main-value">{{tab.mainValue + " " + tab.unit}}</p>
-            </div>
-            <div class="divider-container">
-              <v-layout row justify-center style="margin-bottom: 10px">
-                <v-flex xs1 v-if="showUpIcon(tab) !== false">
-                  <div v-if="showUpIcon(tab) === 'green'">
-                    <v-icon large color="green darken-2">arrow_drop_up</v-icon>
+              <v-layout row justify-center>
+                <v-flex xs5>
+                  <p class="main-value" style="font-size: 4.4rem !important;">{{tab.mainValue}}</p>
+                  <div v-if="tab.id === 'week_steps' || tab.id === 'month_steps'">
+                    <p style="font-size: 2.6rem !important;" class="main-value">{{tab.unit}}/day</p>
                   </div>
-                  <div v-else-if="showUpIcon(tab) === 'red'">
-                    <v-icon large color="red darken-2">arrow_drop_down</v-icon>
+                  <div v-else>
+                   <p style="font-size: 3.6rem !important;" class="main-value">{{tab.unit}}</p>
                   </div>
                 </v-flex>
-                <p class="sub-text"> {{tab | getIntervalString}}</p>
+                <v-flex xs7>
+                  <div style="margin-top: 30px;" v-if="tab.unit === 'Steps'">
+                    <StepArchMeter :idPrefix="tab.id" scale="0.6" :percentage1="getPercentageForStep(tab.mainValue, 20)" :percentage2="getPercentageForStep(tab.mainValue, 40)" :percentage3="getPercentageForStep(tab.mainValue, 60)" :percentage4="getPercentageForStep(tab.mainValue, 80)" :percentage5="getPercentageForStep(tab.mainValue, 100)"/>
+                    <p style="font-size: 1.5rem">Goal {{Math.round((tab.mainValue/stepGoal)*100, 1)}}% complete!</p>
+                  </div>
+                  <div v-else>
+                      <img style="height: 130px" src="/assets/app-images/heart_in_card.png"></img>
+                  </div>
+                </v-flex>
+               </v-layout>
+            </div>
+            <div class="divider-container">
+              <v-layout row justify-center style="margin-bottom: 30px">
+                <v-flex xs2 v-if="showUpIcon(tab) !== false">
+                  <div v-if="showUpIcon(tab) === 'green'">
+                    <img src="/assets/app-images/up_arrow.png"></img>
+                  </div>
+                  <div v-else-if="showUpIcon(tab) === 'red'">
+                     <img style="margin-top: -5px" src="/assets/app-images/down_arrow.png"></img>
+                  </div>
+                </v-flex>
+                <v-flex xs6>
+                  <p class="sub-text"> {{tab | getIntervalString}}</p>
+                </v-flex>
               </v-layout>
             </div>
         </v-tab-item>
@@ -66,6 +81,7 @@
 import CalendarView from './CalendarView.vue'
 import LineChart from './Charts/LineChart.vue'
 import BarChart from './Charts/BarChart.vue'
+import StepArchMeter from './StepArchMeter.vue'
 
 export default {
   name: 'homeCard',
@@ -75,8 +91,9 @@ export default {
     tabs: Array,
     link: String,
     chartData: Array,
-    chartColor: String,
-    chartTitle: String
+    themeColor: String,
+    chartTitle: String,
+    stepGoal: String
   },
   data () {
     return {
@@ -131,12 +148,19 @@ export default {
           datasets: [
               {
                   label: this.title,
-                  backgroundColor: this.chartColor,
+                  backgroundColor: this.themeColor,
                   data: this.chartData
               }
           ]
       };
       return data;
+    },
+    getPercentageForStep(stepValue, basePercentage){
+        let percentage = Math.min(Math.max(0, (((stepValue/this.stepGoal)*100 - (basePercentage-20))/20)*100), 100);
+        if(stepValue){
+          percentage = Math.min(Math.max(0, (((stepValue/this.stepGoal)*100 - (basePercentage-20))/20)*100), 100);
+        }
+        return percentage + "%";
     }
   },
   filters:{
@@ -160,7 +184,8 @@ export default {
   components: {
     CalendarView,
     LineChart,
-    BarChart
+    BarChart,
+    StepArchMeter
   }
 }
 </script>
@@ -181,33 +206,34 @@ export default {
     width: 20px;
   }
   .title{
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
     font-weight: 525;
     margin: auto;
   }
-  .left-imgs{
-    height: 20px;
+  .right-imgs{
+    height: 36px;
   }
   .title-container{
     align-items: center
   }
   .main-value-container{
     height: 150px;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
   .divider-container{
     margin-right: 10px;
     margin-left: 10px;
-    height: 50px;
   }
   .main-value{
-    font-size: 3.2rem !important;
     font-weight: 545;
-    line-height: 150px;
+    line-height: 75px;
+    margin-bottom: 0px;
   }
   .sub-text{
-    font-size: 1.5rem !important;
-    margin-right: 10px;
-    margin-left: 10px;
+    font-size: 2.0rem !important;
+    line-height: 28px;
+    margin-bottom: 0px;
   }
   .chart{
     padding-top: 20px;

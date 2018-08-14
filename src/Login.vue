@@ -2,7 +2,10 @@
     <v-layout justify-center align-center class="outer-container">
         <v-card :height="cardHeight" width=400px>
             <v-layout row justify-center>
-                <img src="/assets/app-images/espertoLogo.png" class="esperto-logo">
+                    <img src="/assets/app-images/espertoLogo.png" class="esperto-logo">
+                <div class="vert-center">
+                    <p class="esperto-logo-text">Esperto Labs</p>
+                </div>
             </v-layout>
             <div v-if="isSigningUp">
                 <v-container>
@@ -184,6 +187,7 @@
                 newPasswordConfirm: '',
                 confirmEmail: '',
                 confirmationCode: '',
+                hidetemp: false
             }
         },
         computed: {
@@ -237,5 +241,20 @@
 <style scoped>
     .outer-container{
         height: 100vh
+    }
+    .esperto-logo{
+        height: 100px;
+        margin-top: 10px;
+    }
+    .esperto-logo-text{
+        font-size: 3em;
+        margin-left: 10px;
+        margin-bottom: 0px;
+    }
+    .vert-center{
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 </style>

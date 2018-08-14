@@ -1,6 +1,6 @@
 <template>
   <div id="stepCount">
-    <h1> My Step Count Details </h1>
+    <h1> My Step Count Data </h1>
     <v-layout row justify-space-around>
       <v-card width="80vw" style="padding-right=10px; padding-left=10px;">
         <ChartSelector 
@@ -13,19 +13,6 @@
           chartColor="#0000FF"
           labelName="Step Count"
         />
-      </v-card>
-    </v-layout>
-    <v-layout row justify-space-around style="margin-top: 30px">
-      <v-card width="80vw">
-        <v-layout row justify-space-around style="margin-top: 30px;">
-          <v-flex xs6>
-            <StepArchMeter :percentage1="stepGoalProgress | getPercentageForStep(20)" :percentage2="stepGoalProgress | getPercentageForStep(40)" :percentage3="stepGoalProgress | getPercentageForStep(60)" :percentage4="stepGoalProgress | getPercentageForStep(80)" :percentage5="stepGoalProgress | getPercentageForStep(100)" />
-            <p class="main-value">{{currentSteps}}/{{stepGoal}}</p>
-          </v-flex>
-          <v-flex xs6 style="display: flex; flex-direction: column; justify-content: center;">
-            <p class="desc-text">You've achieved {{stepGoalProgress}}% of your daily step goal, keep up the good work!</p>
-          </v-flex>
-        </v-layout>
       </v-card>
     </v-layout>
   </div>

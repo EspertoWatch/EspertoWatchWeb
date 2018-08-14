@@ -1,20 +1,29 @@
 <template>
   <div id="home">
-    <v-layout row justify-center>
-        <p class="welcome"> Welcome {{user.name}}! </p>
+    <v-layout row justify-space-around>
+        <v-flex xs11>
+          <v-layout row>
+            <img src="/assets/app-images/profile_placeholder.png" class="profile"></img>
+            <v-layout column>
+              <v-layout row>
+                <p class="welcome"> Welcome {{user.name}}! </p>
+              </v-layout>
+              <v-layout row>
+                <img src="/assets/app-images/watch_icon.png" class="watch-icon">
+                <div class="vert-center">
+                  <p class="sync-text" style="margin-right: 10px"> {{device.name}} last synced {{device.lastSynced | timestampToDate}}</p>
+                </div>
+              </v-layout>
+            </v-layout>
+          </v-layout>
+        </v-flex>
     </v-layout>
     <v-layout row justify-space-around>
-      <v-flex xs8>
-          <p class="sync-text" style="margin-right: 10px"> Last synced my {{device.name}}: {{device.lastSynced | timestampToDate}}</p>
-      </v-flex>
-      <v-flex xs2/>
-    </v-layout>
-    <v-layout row justify-space-around>
-      <v-flex xs5>
-        <HomeCard icon-src="/assets/app-images/step-nav-2.png" :chartData="getMonthSteps.slice(Math.max(getMonthSteps.length - 7, 0))" chartTitle="This Week's Step Count" title="Step Count" v-bind:tabs="getHomeCardStepData" link="StepCount" chartColor='#0000FF'></HomeCard>
+       <v-flex xs5>
+        <HomeCard :chartData="getTodayHR" chartTitle="Today's Heart Rate" title="My Heart Rate" v-bind:tabs="getHomeCardHeartRateData" link="HeartRate" themeColor='#f87979'></HomeCard>
       </v-flex>
       <v-flex xs5>
-        <HomeCard icon-src="/assets/app-images/heart-nav-2.png" :chartData="getTodayHR" chartTitle="Today's Heart Rate" title="Heart Rate (BPM)" v-bind:tabs="getHomeCardHeartRateData" link="HeartRate" chartColor='#f87979'></HomeCard>
+        <HomeCard :stepGoal="stepGoal" :chartData="getMonthSteps.slice(Math.max(getMonthSteps.length - 7, 0))" chartTitle="This Week's Step Count" title="My Step Count" v-bind:tabs="getHomeCardStepData" link="StepCount" themeColor='#0000FF'></HomeCard>
       </v-flex>
     </v-layout>
   </div>
@@ -40,6 +49,9 @@ export default {
     user(){
       return this.$store.state.user;
     },
+    stepGoal(){
+      return this.$store.state.userGoalsData.stepGoals.currentGoal;
+    },
     ...mapGetters([
         'getHomeCardStepData',
         'getHomeCardHeartRateData',
@@ -49,7 +61,7 @@ export default {
   },
   filters: {
     timestampToDate(date){
-      return moment.unix(date).format('MMMM Do YYYY, h:mm:ss a')
+      return moment.unix(date).fromNow();
     }
   },
   methods: {
@@ -79,16 +91,31 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+.vert-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: -7vh;
+}
+.profile{
+  height: 150px;
+}
+.watch-icon{
+  height: 50px;
+  margin-top: -4vh;
+}
 .welcome{
-  font-size: 3.3rem;
+  font-size: 3.5rem;
   font-weight: 520;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+  margin-left: 4px;
+  padding-top: 3vh;
 }
 .sync-text{
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #696969;
+  font-size: 1.8rem;
+  font-weight: 525;
+  margin-bottom: 0px;
+  color: #F95F62;
 }
 ul {
   list-style-type: none;

@@ -109,18 +109,21 @@ export const store = new Vuex.Store({
 			const unit = state.stepCountData.unit;
 			let tabData = [
 				{
+					id: "today_steps",
 					title: "Today",
 					mainValue: today,
 					lastInterval: today - yesterday,
 					unit: unit
 				},
 				{
+					id: "week_steps",
 					title: "This Week",
 					mainValue: thisWeek,
 					lastInterval: thisWeek - lastWeek,
 					unit: unit
 				},
 				{
+					id: "month_steps",
 					title: "This Month",
 					mainValue: thisMonth,
 					totalValue: thisMonthSum,

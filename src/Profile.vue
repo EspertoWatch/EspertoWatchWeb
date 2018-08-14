@@ -2,7 +2,7 @@
   <div id="profile">
     <v-layout row justify-center>
       <v-flex xs10>
-        <p class="section-header-text">About Me</p>
+        <p class="section-header-text">My Settings</p>
       </v-flex>
     </v-layout>
     <v-layout row justify-space-around style="margin-bottom: 10px">
@@ -31,23 +31,10 @@
       </v-layout>
       <v-layout row justify-space-around style="margin-bottom: 10px">
             <v-flex xs5>
+                <EditField label="Daily Step Goal" :value="stepGoals.currentGoal" :submitFunction="changeStepGoal"  iconName="edit"/>
+            </v-flex>
+            <v-flex xs5>
                 <EditField label="My Device" :value="`${device.name} ${device.version}`" type="info" iconName="info-circle"/>
-            </v-flex>
-            <v-flex xs5>
-                <EditField label="Last Synced" :value="device.lastSynced | timestampToSyncDate" type="info" iconName="info-circle"/>
-            </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-          <v-flex xs10>
-            <p class="section-header-text">My Goals</p>
-          </v-flex>
-      </v-layout>
-      <v-layout row justify-space-around style="margin-bottom: 10px">
-            <v-flex xs5>
-                <EditField label="Heart Rate" :value="heartRateGoals.currentGoal" :submitFunction="changeHeartGoal" iconName="edit"/>
-            </v-flex>
-            <v-flex xs5>
-                <EditField label="Step Count" :value="stepGoals.currentGoal" :submitFunction="changeStepGoal"  iconName="edit"/>
             </v-flex>
       </v-layout>
   </div>

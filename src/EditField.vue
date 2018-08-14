@@ -1,10 +1,10 @@
 <template>
     <v-card>
       <v-layout row justify-space-between>
-        <v-flex xs3>
+        <v-flex xs4>
           <p class="text-field-label">{{label}}</p>
         </v-flex>
-        <v-flex xs7>
+        <v-flex xs6>
           <p v-if="!isEditing" class="text-field-value">{{getDisplayValue}}</p>
           <template v-else-if="type === 'dateSelector'">
               <v-date-picker :full-width="true" v-model="value" color="blue"/>
