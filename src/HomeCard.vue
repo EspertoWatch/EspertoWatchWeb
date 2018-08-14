@@ -30,7 +30,12 @@
               <v-layout row justify-center>
                 <v-flex xs5>
                   <p class="main-value" style="font-size: 4.4rem !important;">{{tab.mainValue}}</p>
-                  <p style="font-size: 3.6rem !important;" class="main-value">{{tab.unit}}</p>
+                  <div v-if="tab.id === 'week_steps' || tab.id === 'month_steps'">
+                    <p style="font-size: 2.6rem !important;" class="main-value">{{tab.unit}}/day</p>
+                  </div>
+                  <div v-else>
+                   <p style="font-size: 3.6rem !important;" class="main-value">{{tab.unit}}</p>
+                  </div>
                 </v-flex>
                 <v-flex xs7>
                   <div style="margin-top: 30px;" v-if="tab.unit === 'Steps'">
