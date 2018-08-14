@@ -5,10 +5,10 @@
           <v-layout row>
             <img src="/assets/app-images/profile_placeholder.png" class="profile"></img>
             <v-layout column>
-              <v-layout row>
+              <v-layout row style="margin-top: 3vh;">
                 <p class="welcome"> Welcome {{user.name}}! </p>
               </v-layout>
-              <v-layout row>
+              <v-layout row style="margin-top: -3vh;">
                 <img src="/assets/app-images/watch_icon.png" class="watch-icon">
                 <div class="vert-center">
                   <p class="sync-text" style="margin-right: 10px"> {{device.name}} last synced {{device.lastSynced | timestampToDate}}</p>
@@ -95,21 +95,19 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: -7vh;
+    height: 50px;
 }
 .profile{
   height: 150px;
 }
 .watch-icon{
   height: 50px;
-  margin-top: -4vh;
 }
 .welcome{
   font-size: 3.5rem;
   font-weight: 520;
   margin-bottom: 0px;
   margin-left: 4px;
-  padding-top: 3vh;
 }
 .sync-text{
   font-size: 1.8rem;

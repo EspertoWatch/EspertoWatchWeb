@@ -58,7 +58,7 @@
                      <img style="margin-top: -5px" src="/assets/app-images/down_arrow.png"></img>
                   </div>
                 </v-flex>
-                <v-flex xs6>
+                <v-flex xs7>
                   <p class="sub-text"> {{tab | getIntervalString}}</p>
                 </v-flex>
               </v-layout>
@@ -177,7 +177,7 @@ export default {
         return item.totalValue + " " + unit + " in total."
       }
       else if(item.title === "Current"){
-        return lastInt + " " + unit + " from last hour."
+        return lastInt + " " + unit + " from last updated value."
       }
     }
   },
