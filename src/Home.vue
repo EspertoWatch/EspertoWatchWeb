@@ -5,10 +5,10 @@
           <v-layout row>
             <img src="/assets/app-images/profile_placeholder.png" class="profile"></img>
             <v-layout column>
-              <v-layout row style="margin-top: 3vh;">
+              <v-layout row style="margin-top: 20px;">
                 <p class="welcome"> Welcome {{user.name}}! </p>
               </v-layout>
-              <v-layout row style="margin-top: -3vh;">
+              <v-layout row style="margin-top: -20px;">
                 <img src="/assets/app-images/watch_icon.png" class="watch-icon">
                 <div class="vert-center">
                   <p class="sync-text" style="margin-right: 10px"> {{device.name}} last synced {{device.lastSynced | timestampToDate}}</p>
