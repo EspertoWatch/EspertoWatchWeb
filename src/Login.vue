@@ -187,6 +187,7 @@
                 newPasswordConfirm: '',
                 confirmEmail: '',
                 confirmationCode: '',
+                hidetemp: false
             }
         },
         computed: {

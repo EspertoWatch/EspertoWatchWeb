@@ -19,7 +19,7 @@
       <v-card width="80vw">
         <v-layout row justify-space-around style="margin-top: 30px;">
           <v-flex xs6>
-            <StepArchMeter scale="1" :percentage1="stepGoalProgress | getPercentageForStep(20)" :percentage2="stepGoalProgress | getPercentageForStep(40)" :percentage3="stepGoalProgress | getPercentageForStep(60)" :percentage4="stepGoalProgress | getPercentageForStep(80)" :percentage5="stepGoalProgress | getPercentageForStep(100)" />
+            <StepArchMeter scale="1" :percentage1="stepGoalProgress | getPercentageForStep(20)" :percentage2="stepGoalProgress | getPercentageForStep(40)" :percentage3="stepGoalProgress | getPercentageForStep(60)" :percentage4="stepGoalProgress | getPercentageForStep(80)" :percentage5="stepGoalProgress | getPercentageForStep(100)" idPrefix="step" />
             <p class="main-value">{{currentSteps}}/{{stepGoal}}</p>
           </v-flex>
           <v-flex xs6 style="display: flex; flex-direction: column; justify-content: center;">

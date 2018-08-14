@@ -27,15 +27,18 @@
       <v-tabs-items v-model="tab">
         <v-tab-item v-for="tab in tabs" :key="tab.title" :id="'tab-' + tab.title">
             <div class="main-value-container">
-              <v-layout row justify-space-around>
-                <v-flex xs4>
+              <v-layout row justify-center>
+                <v-flex xs5>
                   <p class="main-value" style="font-size: 4.4rem !important;">{{tab.mainValue}}</p>
                   <p style="font-size: 3.6rem !important;" class="main-value">{{tab.unit}}</p>
                 </v-flex>
                 <v-flex xs7>
-                  <div style="margin-top: 30px;" v-if="title === 'My Step Count'">
-                    <StepArchMeter scale="0.6" :percentage1="getPercentageForStep(tab.mainValue, 20)" :percentage2="getPercentageForStep(tab.mainValue, 40)" :percentage3="getPercentageForStep(tab.mainValue, 60)" :percentage4="getPercentageForStep(tab.mainValue, 80)" :percentage5="getPercentageForStep(tab.mainValue, 100)"/>
+                  <div style="margin-top: 30px;" v-if="tab.unit === 'Steps'">
+                    <StepArchMeter :idPrefix="tab.id" scale="0.6" :percentage1="getPercentageForStep(tab.mainValue, 20)" :percentage2="getPercentageForStep(tab.mainValue, 40)" :percentage3="getPercentageForStep(tab.mainValue, 60)" :percentage4="getPercentageForStep(tab.mainValue, 80)" :percentage5="getPercentageForStep(tab.mainValue, 100)"/>
                     <p style="font-size: 1.5rem">Goal {{Math.round((tab.mainValue/stepGoal)*100, 1)}}% complete!</p>
+                  </div>
+                  <div v-else>
+                      <img style="height: 130px" src="/assets/app-images/heart_in_card.png"></img>
                   </div>
                 </v-flex>
                </v-layout>
@@ -85,7 +88,7 @@ export default {
     chartData: Array,
     themeColor: String,
     chartTitle: String,
-    stepGoal: Number
+    stepGoal: String
   },
   data () {
     return {
@@ -148,7 +151,10 @@ export default {
       return data;
     },
     getPercentageForStep(stepValue, basePercentage){
-        const percentage = Math.min(Math.max(0, (((stepValue/this.stepGoal)*100 - (basePercentage-20))/20)*100), 100);
+        let percentage = Math.min(Math.max(0, (((stepValue/this.stepGoal)*100 - (basePercentage-20))/20)*100), 100);
+        if(stepValue){
+          percentage = Math.min(Math.max(0, (((stepValue/this.stepGoal)*100 - (basePercentage-20))/20)*100), 100);
+        }
         return percentage + "%";
     }
   },
