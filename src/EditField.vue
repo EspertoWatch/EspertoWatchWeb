@@ -7,14 +7,14 @@
         <v-flex xs6>
           <p v-if="!isEditing" class="text-field-value">{{getDisplayValue}}</p>
           <template v-else-if="type === 'dateSelector'">
-              <v-date-picker :full-width="true" @change="dataUpdated(false)" v-model="editValue" color="blue"/>
+              <v-date-picker :full-width="true" @change="dataUpdated(false)" v-model="value" color="blue"/>
           </template>
           <template v-else-if="type === 'dropdownField'">
-              <v-select :items="options" @input="dataUpdated(false)" v-model="editValue"/>
+              <v-select :items="options" @input="dataUpdated(false)" v-model="value"/>
           </template>
           <template v-else>
-            <v-text-field v-model="editValue" @change="dataUpdated(false)"/>
-            <v-select v-if="type==='unitField'" :items="options" @input="dataUpdated(true)" v-model="editUnit"/>
+            <v-text-field v-model="value" @change="dataUpdated(false)"/>
+            <v-select v-if="type==='unitField'" :items="options" @input="dataUpdated(true)" v-model="unit"/>
           </template>
         </v-flex>
         <div v-on:click="onPressIcon">
@@ -31,8 +31,6 @@ export default {
   data () {
     return {
       isEditing: false,
-      editValue: this.value,
-      editUnit: this.unit,
     }
   },
   props: {
@@ -42,20 +40,22 @@ export default {
     type: String,
     options: Array,
     unit: String,
-    submitFunction: Function,
     fieldName: String
   },
   methods: {
-    onPressIcon: function(){
+    onPressIcon(){
       if(this.type !== "info"){
-        this.isEditing = !this.isEditing;
+        this.isEditing = true;
         this.$emit('start_editing', true);
       }
     },
+    stopEditing(){
+      this.isEditing = false;
+    },
     dataUpdated(isUnit){
-      let data = {propName: this.fieldName, data: this.editValue}
+      let data = {propName: this.fieldName, data: this.value}
       if(isUnit){
-        data = {propName: this.fieldName + "unit", data: this.editUnit};
+        data = {propName: this.fieldName + "unit", data: this.unit};
       }
       console.log(data);
       this.$emit('data_updated', data);
@@ -64,13 +64,13 @@ export default {
   computed: {
     getDisplayValue: function(){
       if(this.type === "unitField"){
-        return this.editValue.toString() + this.editUnit;
+        return this.value.toString() + this.unit;
       }
       else if(this.type ==="dateSelector"){
-        return moment(this.editValue, 'YYYY-MM-DD').format('MMM Do YYYY');
+        return moment(this.value, 'YYYY-MM-DD').format('MMM Do YYYY');
       }
       else{
-        return this.editValue;
+        return this.value;
       }
     }
   }

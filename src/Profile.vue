@@ -15,36 +15,44 @@
     </v-layout>
     <v-layout row justify-space-around style="margin-bottom: 10px">
             <v-flex xs5>
-                <EditField fieldName="name" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Name" :value="user.name" iconName="edit"/>
+                <EditField ref="nameField" fieldName="name" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Name" :value="user.name" iconName="edit"/>
             </v-flex>
             <v-flex xs5>
-                <EditField fieldName="birthDate" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Birth Date" :value="user.birthDate | timestampToBirthDate" type="dateSelector" iconName="edit"/>
-            </v-flex>
-      </v-layout>
-      <v-layout row justify-space-around style="margin-bottom: 10px">
-            <v-flex xs5>
-                <EditField fieldName="height" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Height" :value="user.height" :unit="user.heightUnit" :options="['cm', 'inches']" iconName="edit" type="unitField"/>
-            </v-flex>
-            <v-flex xs5>
-                <EditField fieldName="weight" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Weight" :value="user.weight" :unit="user.weightUnit" :options="['lbs', 'kg']" type="unitField" iconName="edit"/>
+                <EditField ref="birthDateField" fieldName="birthDate" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Birth Date" :value="user.birthDate | timestampToBirthDate" type="dateSelector" iconName="edit"/>
             </v-flex>
       </v-layout>
       <v-layout row justify-space-around style="margin-bottom: 10px">
             <v-flex xs5>
-                <EditField fieldName="handedness" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Handedness" :value="user.handedness" type="dropdownField" :options="['Right', 'Left']" iconName="edit"/>
+                <EditField ref="heightField" fieldName="height" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Height" :value="user.height" :unit="user.heightUnit" :options="['cm', 'inches']" iconName="edit" type="unitField"/>
             </v-flex>
             <v-flex xs5>
-                <EditField fieldName="gender" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Gender" :options="['Male', 'Female']" type="dropdownField" :value="user.gender" iconName="edit"/>
+                <EditField ref="weightField" fieldName="weight" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Weight" :value="user.weight" :unit="user.weightUnit" :options="['lbs', 'kg']" type="unitField" iconName="edit"/>
             </v-flex>
       </v-layout>
       <v-layout row justify-space-around style="margin-bottom: 10px">
             <v-flex xs5>
-                <EditField fieldName="currentGoal" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Daily Step Goal" :value="stepGoals.currentGoal"  iconName="edit"/>
+                <EditField ref="handednessField" fieldName="handedness" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Handedness" :value="user.handedness" type="dropdownField" :options="['Right', 'Left']" iconName="edit"/>
+            </v-flex>
+            <v-flex xs5>
+                <EditField ref="genderField" fieldName="gender" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Gender" :options="['Male', 'Female']" type="dropdownField" :value="user.gender" iconName="edit"/>
+            </v-flex>
+      </v-layout>
+      <v-layout row justify-space-around style="margin-bottom: 10px">
+            <v-flex xs5>
+                <EditField ref="goalField" fieldName="currentGoal" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Daily Step Goal" :value="stepGoals.currentGoal"  iconName="edit"/>
             </v-flex>
             <v-flex xs5>
                 <EditField label="My Device" :value="`${device.name} ${device.version}`" type="info" iconName="info-circle"/>
             </v-flex>
       </v-layout>
+      <div style="margin-top: 100px">
+          <v-alert
+            v-model="showAlert"
+            dismissible
+            type="success">
+            You've successfully submitted your changes!
+        </v-alert>
+      </div>
   </div>
 </template>
 
@@ -58,6 +66,7 @@ export default {
     return {
       msg: 'Profile Section',
       isEditing: false,
+      showAlert: false
     }
   },
   filters: {
@@ -97,6 +106,15 @@ export default {
         if(this.stepGoalEdits !== undefined){
           this.changeStepGoal(this.stepGoalEdits);
         }
+        this.showAlert = true;
+        this.isEditing = false;
+        this.$refs.nameField.stopEditing();
+        this.$refs.birthDateField.stopEditing();
+        this.$refs.genderField.stopEditing();
+        this.$refs.handednessField.stopEditing();
+        this.$refs.heightField.stopEditing();
+        this.$refs.weightField.stopEditing();
+        this.$refs.goalField.stopEditing();
       },
       updateData(data){
         const propName = data.propName;
