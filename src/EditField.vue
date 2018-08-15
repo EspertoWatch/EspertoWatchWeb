@@ -7,15 +7,15 @@
         <v-flex xs6>
           <p v-if="!isEditing" class="text-field-value">{{getDisplayValue}}</p>
           <template v-else-if="type === 'dateSelector'">
-              <v-date-picker :full-width="true" v-model="value" color="blue"/>
+              <v-date-picker :full-width="true" @change="dataUpdated(false)" v-model="editValue" color="blue"/>
           </template>
           <template v-else>
-            <v-text-field v-model="value"/>
-            <v-select v-if="type==='unitField'" :items="options" v-model="unit"/>
+            <v-text-field v-model="editValue" @change="dataUpdated(false)"/>
+            <v-select v-if="type==='unitField'" :items="options" @change="dataUpdated(true)" v-model="editUnit"/>
           </template>
         </v-flex>
         <div v-on:click="onPressIcon">
-            <icon class="icon-style" :name="isEditing ? 'check' : iconName" scale="2"/>
+            <icon v-if="!isEditing" class="icon-style" :name="iconName" scale="2"/>
         </div>
       </v-layout>
     </v-card>
@@ -27,7 +27,9 @@ export default {
   name: 'editField',
   data () {
     return {
-      isEditing: false
+      isEditing: false,
+      editValue: this.value,
+      editUnit: this.unit,
     }
   },
   props: {
@@ -38,33 +40,33 @@ export default {
     options: Array,
     unit: String,
     submitFunction: Function,
+    fieldName: String
   },
   methods: {
     onPressIcon: function(){
       if(this.type !== "info"){
-        if(this.isEditing){
-          if(this.type === "unitField"){
-            const payload = {value: parseInt(this.value, 10), unit: this.unit}
-            this.submitFunction(payload);
-          }
-          else{
-             this.submitFunction(this.value);
-          }
-        }
         this.isEditing = !this.isEditing;
+        this.$emit('start_editing', true);
       }
+    },
+    dataUpdated(isUnit){
+      let data = {propName: this.fieldName, data: this.editValue}
+      if(isUnit){
+        data = {propName: this.fieldName + "unit", data: this.editUnit};
+      }
+      this.$emit('data_updated', data);
     }
   },
   computed: {
     getDisplayValue: function(){
       if(this.type === "unitField"){
-        return this.value.toString() + this.unit;
+        return this.editValue.toString() + this.editUnit;
       }
       else if(this.type ==="dateSelector"){
-        return moment(this.value, 'YYYY-MM-DD').format('MMM Do YYYY');
+        return moment(this.editValue, 'YYYY-MM-DD').format('MMM Do YYYY');
       }
       else{
-        return this.value;
+        return this.editValue;
       }
     }
   }
