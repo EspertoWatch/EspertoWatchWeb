@@ -7,7 +7,7 @@
             <v-layout row justify-center>
                 <img src="/assets/app-images/espertoLogo.png" class="esperto-logo">
                 <div class="vert-center">
-                    <p class="esperto-logo-text">Esperto Labs</p>
+                    <p class="esperto-logo-text">Esperto Watch</p>
                 </div>
             </v-layout>
         </router-link>
