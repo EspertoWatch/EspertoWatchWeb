@@ -21,7 +21,7 @@ import moment from 'moment'
 import LineChart from './Charts/LineChart.vue'
 import BarChart from './Charts/BarChart.vue'
 export default {
-  name: 'HeartRate',
+  name: 'ChartSelector',
   props: {
       timePeriod: String,
       timePeriodChoices: Array,
@@ -108,7 +108,7 @@ export default {
         return Array.apply(null, {length: this.dayData.length}).map(Number.call, Number);
       }
       else if(this.timeFrame === "Last 7 Days"){
-        for(let i = 0; i < 6; i ++){
+        for(let i = 0; i < 7; i ++){
           const dayOfWeek =  moment().subtract(i, 'day').format('ddd');
           daysOfWeek.unshift(dayOfWeek);
         }

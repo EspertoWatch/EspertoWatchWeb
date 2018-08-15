@@ -70,8 +70,9 @@
       <CalendarView></CalendarView>
     </v-dialog>
     <v-dialog v-model="chartModal" max-width="400">
-        <v-card style="padding-bottom: 50px;">
-            <BarChart :chartData="getChartData()" :options="getChartOptions()" class="chart"></BarChart>
+        <v-card style="padding-bottom: 20px;">
+            <LineChart v-if="title === 'My Heart Rate'" :chartData="getChartData()" :options="getChartOptions()" class="chart"></LineChart>
+            <BarChart v-else :chartData="getChartData()" :options="getChartOptions()" class="chart"></BarChart>
         </v-card>
     </v-dialog>
   </div>
@@ -82,18 +83,21 @@ import CalendarView from './CalendarView.vue'
 import LineChart from './Charts/LineChart.vue'
 import BarChart from './Charts/BarChart.vue'
 import StepArchMeter from './StepArchMeter.vue'
+import moment from 'moment'
 
 export default {
   name: 'homeCard',
   props: {
     iconSrc: String,
-    title: String,
+    yAxisTitle: String,
+    xAxisTitle: String,
     tabs: Array,
     link: String,
     chartData: Array,
     themeColor: String,
     chartTitle: String,
-    stepGoal: String
+    stepGoal: String,
+    title: String
   },
   data () {
     return {
@@ -122,8 +126,15 @@ export default {
       return item.lastInterval > 0;
     },
     getLabels(){
-      const n = this.chartData.length;
-      return Array.apply(null, {length: n}).map(Number.call, Number);
+      if(this.title === "My Step Count"){
+        const daysOfWeek = [];
+        for(let i = 0; i < 7; i ++){
+          const dayOfWeek =  moment().subtract(i, 'day').format('ddd');
+          daysOfWeek.unshift(dayOfWeek);
+        }
+        return daysOfWeek;
+      }
+      return Array.apply(null, {length: this.chartData.length}).map(Number.call, Number);
     },
     getChartOptions(){
       const options = {
@@ -133,11 +144,35 @@ export default {
                 fontSize: 20
             },
             scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    }
-                }]
+              xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: this.xAxisTitle,
+                  fontSize: 16,
+                }
+              }],
+              yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: this.yAxisTitle,
+                  fontSize: 16,
+                }
+              }]
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                }
+              }
+            },
+            elements: { 
+              point: { radius: 0 } 
             }
         };
         return options;
@@ -147,7 +182,7 @@ export default {
           labels: this.getLabels(),
           datasets: [
               {
-                  label: this.title,
+                  label: "",
                   backgroundColor: this.themeColor,
                   data: this.chartData
               }
