@@ -27,7 +27,7 @@
       <v-tabs-items v-model="tab">
         <v-tab-item v-for="tab in tabs" :key="tab.title" :id="'tab-' + tab.title">
             <div class="main-value-container">
-              <v-layout row justify-center>
+              <v-layout row justify-center v-if="tab.unit === 'Steps'">
                 <v-flex xs5>
                   <p class="main-value" style="font-size: 4.4rem !important;">{{tab.mainValue}}</p>
                   <div v-if="tab.id === 'week_steps' || tab.id === 'month_steps'">
@@ -38,15 +38,15 @@
                   </div>
                 </v-flex>
                 <v-flex xs7>
-                  <div style="margin-top: 30px;" v-if="tab.unit === 'Steps'">
+                  <div style="margin-top: 30px;">
                     <StepArchMeter :idPrefix="tab.id" scale="0.6" :percentage1="getPercentageForStep(tab.mainValue, 20)" :percentage2="getPercentageForStep(tab.mainValue, 40)" :percentage3="getPercentageForStep(tab.mainValue, 60)" :percentage4="getPercentageForStep(tab.mainValue, 80)" :percentage5="getPercentageForStep(tab.mainValue, 100)"/>
                     <p style="font-size: 1.5rem">Goal {{Math.round((tab.mainValue/stepGoal)*100, 1)}}% complete!</p>
                   </div>
-                  <div v-else>
-                      <img style="height: 130px" src="/assets/app-images/heart_in_card.png"></img>
-                  </div>
                 </v-flex>
                </v-layout>
+               <div v-else style="display: flex; flex-direction: column; justify-content: center; height: 150px;">
+                <p class="main-value" style="font-size: 4.4rem !important;">{{tab.mainValue}} {{tab.unit}}</p>
+               </div>
             </div>
             <div class="divider-container">
               <v-layout row justify-center style="margin-bottom: 30px">
@@ -252,9 +252,9 @@ export default {
     align-items: center
   }
   .main-value-container{
-    height: 150px;
     margin-bottom: 10px;
     margin-top: 10px;
+    height: 150px;
   }
   .divider-container{
     margin-right: 10px;
