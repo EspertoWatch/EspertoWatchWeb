@@ -74,7 +74,7 @@ export const store = new Vuex.Store({
 			const yesterday = state.stepCountData.totalDailySteps[moment().subtract(1, 'day').format("YYYY-MM-DD")] ? Math.round(state.stepCountData.totalDailySteps[moment().subtract(1, 'day').format("YYYY-MM-DD")], 1) : 0;
 			let thisWkSum = state.stepCountData.currentSteps;
 			let thisWkCounter = 1;
-			for(let i = 1; i < 6; i ++){
+			for(let i = 1; i < 7; i ++){
 				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
 				if(state.stepCountData.totalDailySteps[date]){
 					thisWkCounter++;
@@ -85,7 +85,7 @@ export const store = new Vuex.Store({
 
 			let lastWkSum = 0;
 			let lastWkCounter = 0;
-			for(let i = 6; i < 13; i ++){
+			for(let i = 7; i < 14; i ++){
 				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
 				if(state.stepCountData.totalDailySteps[date]){
 					lastWkCounter++;
@@ -144,7 +144,7 @@ export const store = new Vuex.Store({
 			
 			let thisWkSum = 0;
 			let thisWkCounter = 0;
-			for(let i = 0; i < 6; i ++){
+			for(let i = 0; i < 7; i ++){
 				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
 				if(state.heartRateData.avgDailyHR[date]){
 					thisWkCounter++;
@@ -155,7 +155,7 @@ export const store = new Vuex.Store({
 
 			let lastWkSum = 0;
 			let lastWkCounter = 0;
-			for(let i = 6; i < 13; i ++){
+			for(let i = 7; i < 14; i ++){
 				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
 				if(state.heartRateData.avgDailyHR[date]){
 					lastWkCounter++;

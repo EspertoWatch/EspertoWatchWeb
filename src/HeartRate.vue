@@ -6,12 +6,11 @@
         <ChartSelector 
           :dayData="getTodayHR"
           :weekData="getWeekHR"
-          graph-type="Line"
           time-period="Today"
-          :graph-type-choices="['Bar', 'Line']"
-          :time-period-choices="['Today', 'This Week']"
+          :time-period-choices="['Today', 'Last 7 Days']"
           chartColor='#f87979'
           labelName="Heart Rate (BPM)"
+          yAxisTitle="Heart Rate (Beats Per Minute)"
         />
       </v-card>
     </v-layout>

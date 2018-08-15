@@ -40,7 +40,7 @@ export default {
   filters: {
   	getDataText(date, data){
       if(data.data[date]){
-        return `${data.data[date]} ${data.unit} on ${date}`;
+        return `${Math.round(data.data[date], 1)} ${data.unit} on ${date}`;
       }
   		return `No data for ${date}`;
   	}

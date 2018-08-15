@@ -6,12 +6,11 @@
         <ChartSelector 
           :weekData="getMonthSteps.slice(Math.max(getMonthSteps.length - 7, 0))"
           :monthData="getMonthSteps"
-          graph-type="Bar"
-          time-period="This Week"
-          :graph-type-choices="['Bar', 'Line']"
-          :time-period-choices="['This Week', 'This Month']"
-          chartColor="#0000FF"
+          time-period="Last 7 Days"
+          :time-period-choices="['Last 7 Days', 'Last 30 Days']"
+          chartColor="#0A7BF6"
           labelName="Step Count"
+          yAxisTitle="Number of Steps"
         />
       </v-card>
     </v-layout>

@@ -7,7 +7,7 @@
             <v-layout row justify-center>
                 <img src="/assets/app-images/espertoLogo.png" class="esperto-logo">
                 <div class="vert-center">
-                    <p class="esperto-logo-text">Esperto Labs</p>
+                    <p class="esperto-logo-text">Esperto Watch</p>
                 </div>
             </v-layout>
         </router-link>
@@ -15,9 +15,10 @@
       <v-spacer/>
       <div class="nav-logos">
         <v-layout row>
-          <router-link to="Profile"><img src="/assets/app-images/profile-nav-2.png"></router-link>
-          <router-link to="StepCount"><img src="/assets/app-images/step-nav-2.png"></router-link>
+          <router-link to="/"><img src="/assets/app-images/home_icon.png" style="height: 40px"></router-link>
           <router-link to="HeartRate"><img src="/assets/app-images/heart-nav-2.png"></router-link>
+          <router-link to="StepCount"><img src="/assets/app-images/step-nav-2.png"></router-link>
+           <router-link to="Profile"><img src="/assets/app-images/profile-nav-2.png"></router-link>
           <div style=" display: flex; flex-direction: column; justify-content: center;">
             <a @click='logout' class="logout-text">Logout</a>
           </div>
