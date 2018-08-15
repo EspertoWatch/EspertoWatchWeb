@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import LineChart from './Charts/LineChart.vue'
 import BarChart from './Charts/BarChart.vue'
 export default {
@@ -66,6 +67,9 @@ export default {
                       return tooltipItem.yLabel;
               }
             }
+        },
+        elements: { 
+          point: { radius: 0 } 
         }
       }
     },
@@ -99,17 +103,24 @@ export default {
       }
     },
     getLabels(){
-      let n;
+      let daysOfWeek = [];
       if(this.timeFrame === "Today"){
-        n = this.dayData.length;
+        return Array.apply(null, {length: this.dayData.length}).map(Number.call, Number);
       }
       else if(this.timeFrame === "Last 7 Days"){
-        n = this.weekData.length;
+        for(let i = 0; i < 6; i ++){
+          const dayOfWeek =  moment().subtract(i, 'day').format('ddd');
+          daysOfWeek.unshift(dayOfWeek);
+        }
+        return daysOfWeek;
       }
       else{
-        n = this.monthData.length;
+        for(let i = 0; i < 30; i ++){
+          const dayOfWeek =  moment().subtract(i, 'day').format('D');
+          daysOfWeek.unshift(dayOfWeek);
+        }
+        return daysOfWeek;
       }
-      return Array.apply(null, {length: n}).map(Number.call, Number);
     },
     getXTitle(){
       if(this.timeFrame === "Today"){

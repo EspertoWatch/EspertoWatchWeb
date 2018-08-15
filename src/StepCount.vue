@@ -8,7 +8,7 @@
           :monthData="getMonthSteps"
           time-period="Last 7 Days"
           :time-period-choices="['Last 7 Days', 'Last 30 Days']"
-          chartColor="#0000FF"
+          chartColor="#0A7BF6"
           labelName="Step Count"
           yAxisTitle="Number of Steps"
         />

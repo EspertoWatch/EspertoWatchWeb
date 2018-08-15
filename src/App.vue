@@ -15,9 +15,9 @@
       <v-spacer/>
       <div class="nav-logos">
         <v-layout row>
-          <router-link to="Profile"><img src="/assets/app-images/profile-nav-2.png"></router-link>
-          <router-link to="StepCount"><img src="/assets/app-images/step-nav-2.png"></router-link>
           <router-link to="HeartRate"><img src="/assets/app-images/heart-nav-2.png"></router-link>
+          <router-link to="StepCount"><img src="/assets/app-images/step-nav-2.png"></router-link>
+           <router-link to="Profile"><img src="/assets/app-images/profile-nav-2.png"></router-link>
           <div style=" display: flex; flex-direction: column; justify-content: center;">
             <a @click='logout' class="logout-text">Logout</a>
           </div>
