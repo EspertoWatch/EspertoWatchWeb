@@ -150,6 +150,9 @@ export default {
                   display: true,
                   labelString: this.xAxisTitle,
                   fontSize: 16,
+                },
+                gridLines: {
+                    display:false
                 }
               }],
               yAxes: [{
@@ -158,6 +161,12 @@ export default {
                   display: true,
                   labelString: this.yAxisTitle,
                   fontSize: 16,
+                },
+                ticks: {
+                  beginAtZero: true,
+                },
+                gridLines: {
+                    display:false
                 }
               }]
             },

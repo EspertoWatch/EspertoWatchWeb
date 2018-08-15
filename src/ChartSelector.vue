@@ -47,6 +47,9 @@ export default {
               display: true,
               labelString: this.getXTitle(),
               fontSize: 18,
+            },
+            gridLines: {
+                display:false
             }
           }],
           yAxes: [{
@@ -55,6 +58,12 @@ export default {
               display: true,
               labelString: this.yAxisTitle,
               fontSize: 18,
+            },
+            ticks: {
+              beginAtZero: true,
+            },
+            gridLines: {
+                display:false
             }
           }]
         },
