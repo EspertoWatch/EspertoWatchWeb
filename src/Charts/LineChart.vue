@@ -6,8 +6,14 @@
 	  name: 'LineChart',
 	  extends: Line,
 		mixins: [reactiveProp],
+    props: ['chartData', 'options'],
     mounted () {
       this.renderChart(this.chartData, this.options)
-    }
+    },
+		watch: {
+			options () {
+					this.renderChart(this.chartData, this.options);
+			}
+		}
 	}
 </script>

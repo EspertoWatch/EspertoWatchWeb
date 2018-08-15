@@ -1,21 +1,12 @@
 <template>
-    <div style="margin-left: 20px; margin-right: 20px;">
-        <BarChart v-if="graphStructure === 'Bar'" :height="175" :chartData="chartData" :options="chartOptions" class="chart"></BarChart>
-        <LineChart v-else-if="graphStructure ==='Line'" :height="175" :chartData="chartData" :options="chartOptions" class="chart"></LineChart>
-        <v-layout row wrap>
-            <v-flex xs4>
-            <p class="input-label">Select Graph Type: </p>
-            </v-flex>
-            <v-flex xs7>
-            <v-select
-                :items="graphTypeChoices"
-                v-model="graphStructure"
-            ></v-select>
-            </v-flex>
-            <v-flex xs4>
+    <div style="margin-left: 30px; margin-right: 30px; margin-top: 20px">
+        <LineChart v-if="timeFrame === 'Today'" :height="175" :chartData="chartData" :options="chartOptions" class="chart"></LineChart>
+        <BarChart v-else :height="175" :chartData="chartData" :options="chartOptions" class="chart"></BarChart>
+        <v-layout row wrap style="margin-bottom: 15px">
+            <v-flex xs3>
             <p class="input-label">Select Time Period: </p>
             </v-flex>
-            <v-flex xs7>
+            <v-flex xs8>
             <v-select
                 :items="timePeriodChoices"
                 v-model="timeFrame"
@@ -31,19 +22,17 @@ import BarChart from './Charts/BarChart.vue'
 export default {
   name: 'HeartRate',
   props: {
-      graphType: String,
       timePeriod: String,
-      graphTypeChoices: Array,
       timePeriodChoices: Array,
       dayData: Array,
       weekData: Array,
       monthData: Array,
       chartColor: String,
-      labelName: String
+      labelName: String,
+      yAxisTitle: String
   },
   data () {
     return {
-      graphStructure: this.graphType,
       timeFrame: this.timePeriod
     }
   },
@@ -51,11 +40,32 @@ export default {
     chartOptions(){
       return{
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: this.getXTitle(),
+              fontSize: 18,
+            }
+          }],
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: this.yAxisTitle,
+              fontSize: 18,
+            }
+          }]
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            callbacks: {
+              label: function(tooltipItem) {
+                      return tooltipItem.yLabel;
+              }
+            }
         }
       }
     },
@@ -81,7 +91,7 @@ export default {
       if(this.timeFrame === "Today"){
         return this.dayData;
       }
-      else if(this.timeFrame === "This Week"){
+      else if(this.timeFrame === "Last 7 Days"){
         return this.weekData;
       }
       else{
@@ -93,13 +103,24 @@ export default {
       if(this.timeFrame === "Today"){
         n = this.dayData.length;
       }
-      else if(this.timeFrame === "This Week"){
+      else if(this.timeFrame === "Last 7 Days"){
         n = this.weekData.length;
       }
       else{
         n = this.monthData.length;
       }
       return Array.apply(null, {length: n}).map(Number.call, Number);
+    },
+    getXTitle(){
+      if(this.timeFrame === "Today"){
+        return "Time";
+      }
+      else if(this.timeFrame === "Last 7 Days"){
+        return "Day of the Week"
+      }
+      else{
+        return "Date"
+      }
     }
   }
 }
