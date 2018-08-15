@@ -4,10 +4,10 @@
       <v-flex xs10>
         <v-layout row>
           <p class="section-header-text">My Settings</p>
-          <v-layout v-on:click="saveData" row v-if="isEditing" style="margin-left: 50px">
-            <v-icon x-large>save</v-icon>
+          <v-layout row v-if="isEditing" style="margin-left: 50px">
+            <v-icon v-on:click="saveData" x-large>save</v-icon>
             <div class="vert-center" style="margin-left: 10px">
-              <p class="save-text">Save Changes</p>
+              <a v-on:click="saveData" class="save-text">Save Changes</a>
             </div>
           </v-layout>
         </v-layout>
@@ -31,10 +31,10 @@
       </v-layout>
       <v-layout row justify-space-around style="margin-bottom: 10px">
             <v-flex xs5>
-                <EditField fieldName="handedness" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Handedness" :value="user.handedness" iconName="edit"/>
+                <EditField fieldName="handedness" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Handedness" :value="user.handedness" type="dropdownField" :options="['Right', 'Left']" iconName="edit"/>
             </v-flex>
             <v-flex xs5>
-                <EditField fieldName="gender" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Gender" :value="user.gender" iconName="edit"/>
+                <EditField fieldName="gender" v-on:start_editing="startEditing" v-on:data_updated="updateData" label="Gender" :options="['Male', 'Female']" type="dropdownField" :value="user.gender" iconName="edit"/>
             </v-flex>
       </v-layout>
       <v-layout row justify-space-around style="margin-bottom: 10px">

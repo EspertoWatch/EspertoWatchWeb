@@ -9,9 +9,12 @@
           <template v-else-if="type === 'dateSelector'">
               <v-date-picker :full-width="true" @change="dataUpdated(false)" v-model="editValue" color="blue"/>
           </template>
+          <template v-else-if="type === 'dropdownField'">
+              <v-select :items="options" @input="dataUpdated(false)" v-model="editValue"/>
+          </template>
           <template v-else>
             <v-text-field v-model="editValue" @change="dataUpdated(false)"/>
-            <v-select v-if="type==='unitField'" :items="options" @change="dataUpdated(true)" v-model="editUnit"/>
+            <v-select v-if="type==='unitField'" :items="options" @input="dataUpdated(true)" v-model="editUnit"/>
           </template>
         </v-flex>
         <div v-on:click="onPressIcon">
@@ -54,6 +57,7 @@ export default {
       if(isUnit){
         data = {propName: this.fieldName + "unit", data: this.editUnit};
       }
+      console.log(data);
       this.$emit('data_updated', data);
     }
   },
