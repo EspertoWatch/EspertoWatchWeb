@@ -220,26 +220,8 @@ export const store = new Vuex.Store({
 		}
 	},
 	mutations: {
-		CHANGE_USER_NAME(state, newName){
-			state.user.name = newName;
-		},
-		CHANGE_USER_BIRTHDATE(state, newDate){
-			const dateTimeStamp = moment(newDate, 'YYYY-MM-DD').unix();
-			state.user.birthDate = dateTimeStamp;
-		},
-		CHANGE_USER_HEIGHT(state, payload){
-			state.user.height = payload.value;
-			state.user.heightUnit = payload.unit;
-		},
-		CHANGE_USER_WEIGHT(state, payload){
-			state.user.weight = payload.value;
-			state.user.weightUnit = payload.unit;
-		},
-		CHANGE_USER_HANDEDNESS(state, newHandedness){
-			state.user.handedness = newHandedness;
-		},
-		CHANGE_USER_GENDER(state, newGender){
-			state.user.gender = newGender;
+		CHANGE_USER_DATA(state, newUser){
+			state.user = newUser;
 		},
 		CHANGE_STEP_GOAL(state, newGoal){
 			state.userGoalsData.stepGoals.currentGoal = newGoal;
@@ -299,53 +281,17 @@ export const store = new Vuex.Store({
 		}
 	},
 	actions: {
-  		async changeUserName (context, newName) {
-  			const userObj = Object.assign({}, context.state.user);
-			userObj.name = newName;
-			const res = await API.post('esperto-app', '/userInfo', {body: userObj});
-    		context.commit('CHANGE_USER_NAME', newName);
-  		},
-  		async changeUserBirthdate(context, newDate){
-			const userObj = Object.assign({}, context.state.user);
-			userObj.birthDate = newDate;
-  			const res = await API.post('esperto-app', '/userInfo', {body: userObj});
-  			context.commit('CHANGE_USER_BIRTHDATE', newDate);
-  		},
-  		async changeUserHeight(context, payload){
-			const userObj = Object.assign({}, context.state.user);
-			userObj.height = payload.value;
-			userObj.heightUnit = payload.unit;
-			const res = await API.post('esperto-app', '/userInfo', {body: userObj});
-  			context.commit('CHANGE_USER_HEIGHT', payload);
-  		},
-  		async changeUserWeight(context, payload){
-  			const userObj = Object.assign({}, context.state.user);
-			userObj.weight = payload.value;
-			userObj.weightUnit = payload.unit;
-			const res = await API.post('esperto-app', '/userInfo', {body: userObj});
-  			context.commit('CHANGE_USER_WEIGHT', payload);
-  		},
-  		async changeUserHandedness(context, newHandedness){
-			const userObj = Object.assign({}, context.state.user);
-			userObj.handedness = newHandedness;
-			const res = await API.post('esperto-app', '/userInfo', {body: userObj});
-  			context.commit('CHANGE_USER_HANDEDNESS', newHandedness);
-  		},
-  		async changeUserGender(context, newGender){
-			const userObj = Object.assign({}, context.state.user);
-			userObj.gender = newGender;
-			const res = await API.post('esperto-app', '/userInfo', {body: userObj});
-  			context.commit('CHANGE_USER_GENDER', newGender);
+  		async updateUserData(context, newUserData){
+			const res = await API.post('esperto-app', '/userInfo', {body: newUserData});
+  			context.commit('CHANGE_USER_DATA', newUserData);
   		},
 		
 		//still need to add api calls here
 		//right now newGoal just contains new int to be set as currentGoal
 		//eventually will need to be an object with isAutoset and currentGoal
 		async changeStepGoal(context, newGoal){
-			const goalObj = Object.assign({}, context.state.userGoalsData.stepGoals);
-			goalObj.currentGoal = newGoal;
-			const res = await API.post('esperto-app', '/stepCountGoals', {body: goalObj});
-			context.commit('CHANGE_STEP_GOAL', newGoal);
+			const res = await API.post('esperto-app', '/stepCountGoals', {body: newGoal});
+			context.commit('CHANGE_STEP_GOAL', newGoal.currentGoal);
 		},
 		async changeHeartGoal(context, newGoal){
 			const goalObj = Object.assign({}, context.state.userGoalsData.heartRateGoals);

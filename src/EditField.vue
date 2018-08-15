@@ -7,15 +7,18 @@
         <v-flex xs6>
           <p v-if="!isEditing" class="text-field-value">{{getDisplayValue}}</p>
           <template v-else-if="type === 'dateSelector'">
-              <v-date-picker :full-width="true" v-model="value" color="blue"/>
+              <v-date-picker :full-width="true" @change="dataUpdated(false)" v-model="value" color="blue"/>
+          </template>
+          <template v-else-if="type === 'dropdownField'">
+              <v-select :items="options" @input="dataUpdated(false)" v-model="value"/>
           </template>
           <template v-else>
-            <v-text-field v-model="value"/>
-            <v-select v-if="type==='unitField'" :items="options" v-model="unit"/>
+            <v-text-field v-model="value" @change="dataUpdated(false)"/>
+            <v-select v-if="type==='unitField'" :items="options" @input="dataUpdated(true)" v-model="unit"/>
           </template>
         </v-flex>
         <div v-on:click="onPressIcon">
-            <icon class="icon-style" :name="isEditing ? 'check' : iconName" scale="2"/>
+            <icon v-if="!isEditing" class="icon-style" :name="iconName" scale="2"/>
         </div>
       </v-layout>
     </v-card>
@@ -27,7 +30,7 @@ export default {
   name: 'editField',
   data () {
     return {
-      isEditing: false
+      isEditing: false,
     }
   },
   props: {
@@ -37,22 +40,25 @@ export default {
     type: String,
     options: Array,
     unit: String,
-    submitFunction: Function,
+    fieldName: String
   },
   methods: {
-    onPressIcon: function(){
+    onPressIcon(){
       if(this.type !== "info"){
-        if(this.isEditing){
-          if(this.type === "unitField"){
-            const payload = {value: parseInt(this.value, 10), unit: this.unit}
-            this.submitFunction(payload);
-          }
-          else{
-             this.submitFunction(this.value);
-          }
-        }
-        this.isEditing = !this.isEditing;
+        this.isEditing = true;
+        this.$emit('start_editing', true);
       }
+    },
+    stopEditing(){
+      this.isEditing = false;
+    },
+    dataUpdated(isUnit){
+      let data = {propName: this.fieldName, data: this.value}
+      if(isUnit){
+        data = {propName: this.fieldName + "unit", data: this.unit};
+      }
+      console.log(data);
+      this.$emit('data_updated', data);
     }
   },
   computed: {
