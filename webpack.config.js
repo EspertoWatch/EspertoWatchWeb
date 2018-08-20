@@ -77,7 +77,9 @@ module.exports = {
     extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: 'app.html',
+    },
     noInfo: true,
     overlay: true
   },
