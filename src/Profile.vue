@@ -4,12 +4,6 @@
       <v-flex xs10>
         <v-layout row>
           <p class="section-header-text">My Settings</p>
-          <v-layout row v-if="isEditing" style="margin-left: 50px">
-            <v-icon v-on:click="saveData" x-large>save</v-icon>
-            <div class="vert-center" style="margin-left: 10px">
-              <a v-on:click="saveData" class="save-text">Save Changes</a>
-            </div>
-          </v-layout>
         </v-layout>
       </v-flex>
     </v-layout>
@@ -45,6 +39,12 @@
                 <EditField label="My Device" :value="`${device.name} ${device.version}`" type="info" iconName="info-circle"/>
             </v-flex>
       </v-layout>
+      <v-layout row justify-center v-if="isEditing" style="margin-top: 30px">
+            <v-icon v-on:click="saveData" x-large>save</v-icon>
+            <div class="vert-center" style="margin-left: 10px">
+              <a v-on:click="saveData" class="save-text">Save Changes</a>
+            </div>
+          </v-layout>
       <div style="margin-top: 100px">
           <v-alert
             v-model="showAlert"
@@ -187,7 +187,7 @@ export default {
 }
 .save-text{
   color: #0A7BF6;
-  font-size: 1.3em;
+  font-size: 1.5em;
   margin-bottom: 0px;
 }
 </style>

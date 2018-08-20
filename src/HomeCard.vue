@@ -55,12 +55,12 @@
                     <img src="/assets/app-images/up_arrow.png"></img>
                   </div>
                   <div v-else-if="showUpIcon(tab) === 'red'">
-                     <img style="margin-top: -5px" src="/assets/app-images/down_arrow.png"></img>
+                     <img src="/assets/app-images/down_arrow.png"></img>
                   </div>
                 </v-flex>
-                <v-flex xs7>
+                <div class="vert-center" style="height: 68px">
                   <p class="sub-text"> {{tab | getIntervalString}}</p>
-                </v-flex>
+                </div>
               </v-layout>
             </div>
         </v-tab-item>
@@ -275,7 +275,7 @@ export default {
     margin-bottom: 0px;
   }
   .sub-text{
-    font-size: 2.0rem !important;
+    font-size: 1.8em !important;
     line-height: 28px;
     margin-bottom: 0px;
   }
@@ -283,5 +283,10 @@ export default {
     padding-top: 20px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+  .vert-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 </style>
