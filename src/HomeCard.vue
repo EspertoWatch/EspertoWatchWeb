@@ -153,6 +153,9 @@ export default {
                 },
                 gridLines: {
                     display:false
+                },
+                ticks: {
+                    display: (this.title === "My Step Count")
                 }
               }],
               yAxes: [{

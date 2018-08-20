@@ -162,7 +162,7 @@ export const store = new Vuex.Store({
 					lastWkSum = lastWkSum + state.heartRateData.avgDailyHR[date];
 				}
 			}
-			const lastWeek = Math.round(lastWkSum/lastWkCounter, 1);
+			const lastWeek = Math.round(lastWkCounter !== 0 ? lastWkSum/lastWkCounter : 0, 1);
 
 
 			const unit = state.heartRateData.unit;
@@ -201,13 +201,18 @@ export const store = new Vuex.Store({
 			return monthSteps;
 		},
 		getTodayHR: state => {
-			let todayHR = [state.heartRateData.currentHR];
-			for(let i = 0; i < 24; i ++){
-				const key = i < 10 ? moment().format("YYYY-MM-DD") + " 0" + i.toString() : moment().format("YYYY-MM-DD") + " " + i.toString();
-				const hrVal = state.heartRateData.avgHourlyHR[key] ? state.heartRateData.avgHourlyHR[key] : 0;
-				todayHR.push(hrVal);
-			}
-			return todayHR;
+			const keys = Object.keys(state.heartRateData.avgHourlyHR).map(Number);
+			const unixStart = moment().startOf('day').unix();
+			const unixEnd = moment().endOf('day').unix();
+			const todayUnixTimes = keys.filter(key => key <= unixEnd && key >= unixStart).sort((a, b) => a - b);
+
+			let todayHRs = [];
+			todayUnixTimes.forEach(function(timestamp){
+				todayHRs.push(state.heartRateData.avgHourlyHR[timestamp]);
+			});
+			todayHRs.push(state.heartRateData.currentHR);
+
+			return todayHRs;
 		},
 		getWeekHR: state => {
 			let weekHR = [];
@@ -235,21 +240,23 @@ export const store = new Vuex.Store({
         },
         GET_HEART_RATE(state, heartRate){
             state.heartRateData = heartRate;
-			heartRate.avgHourlyHR;
 			state.heartRateData.unit = "BPM";
-
+			
+			const keys = Object.keys(heartRate.avgHourlyHR).map(Number);
 			let avgDailyHR = {};
-			for(let i = 0; i < 13; i ++){
+			//the above object will store the avg daily HR for the past week
+			for(let i = 0; i < 7; i ++){
 				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
+				const unixStart = moment().subtract(i,'days').startOf('day').unix();
+				const unixEnd = moment().subtract(i,'days').endOf('day').unix();
+				const dayUnixTimes = keys.filter(key => key <= unixEnd && key >= unixStart);
+
 				let sum = 0;
 				let numVals = 0;
-				for(let j = 0; j < 24; j++){
-					const key = j < 10 ? date + " 0" + j.toString() : date + " " + j.toString();
-					if(heartRate.avgHourlyHR[key]){
-						sum = sum + heartRate.avgHourlyHR[key];
-						numVals = numVals + 1;
-					}
-				}
+				dayUnixTimes.forEach(function(timestamp){
+					sum = sum + heartRate.avgHourlyHR[timestamp];
+					numVals = numVals + 1;
+				});
 				avgDailyHR[date] = sum === 0 ? 0 : sum/numVals;
 			}
 
@@ -346,7 +353,6 @@ export const store = new Vuex.Store({
 			try{
 				await Auth.signUp({username: signUpData.username, password: signUpData.password}).then(function(res){
 					const signUpInfo = Object.assign({}, signUpData);
-					debugger;
 					signUpInfo.userId = res.userSub
 					context.commit('STORE_SIGN_UP_INFO', signUpInfo);
 				});
