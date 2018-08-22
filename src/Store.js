@@ -41,7 +41,8 @@ export const store = new Vuex.Store({
 			avgDailyHR: {}
 		},
 		stepCountData: {
-			totalDailySteps: {}
+			totalDailySteps: {},
+			rawStepData: {}
 		},
 		device: {
 			name: "Esperto Watch",
@@ -237,12 +238,33 @@ export const store = new Vuex.Store({
         GET_STEP_COUNT(state, stepCount){
             state.stepCountData = stepCount;
 			state.stepCountData.unit = "Steps";
+			state.stepCountData.rawStepData = stepCount.totalDailySteps;
+
+			const keys = Object.keys(stepCount.totalDailySteps);
+			let totDailySteps = {};
+			//the above object will store the avg daily HR for the past week
+			for(let i = 0; i < 30; i ++){
+				const date = moment().subtract(i, 'day').format("YYYY-MM-DD");
+				const unixStart = moment().subtract(i,'days').startOf('day').unix();
+				const unixEnd = moment().subtract(i,'days').endOf('day').unix();
+				const dayUnixTimes = keys.filter(key => key <= unixEnd && key >= unixStart);
+
+				const stepCountsForDay = [];
+				dayUnixTimes.forEach(function(timestamp){
+					stepCountsForDay.push(stepCount.totalDailySteps[timestamp]);
+				});
+				if(stepCountsForDay.length > 0){
+					totDailySteps[date] = Math.max(...stepCountsForDay);
+				}
+			}
+
+			state.stepCountData.totalDailySteps = totDailySteps;
         },
         GET_HEART_RATE(state, heartRate){
             state.heartRateData = heartRate;
 			state.heartRateData.unit = "BPM";
 			
-			const keys = Object.keys(heartRate.avgHourlyHR).map(Number);
+			const keys = Object.keys(heartRate.avgHourlyHR);
 			let avgDailyHR = {};
 			//the above object will store the avg daily HR for the past week
 			for(let i = 0; i < 7; i ++){
