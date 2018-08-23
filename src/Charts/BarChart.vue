@@ -7,13 +7,17 @@
 	  extends: Bar,
 		mixins: [reactiveProp],
 		props: ['chartData', 'options'],
-    mounted () {
-      this.renderChart(this.chartData, this.options)
-    },
-		watch: {
-			options () {
-					this.renderChart(this.chartData, this.options);
+    watch: {
+			'options': {
+				handler (newOption, oldOption) {
+					this._chart.destroy()
+					this.renderChart(this.chartData, this.options)
+				},
+				deep: true
 			}
+		},
+		mounted () {
+			this.renderChart(this.chartData, this.options)
 		}
 	}
 </script>
