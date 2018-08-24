@@ -71,6 +71,22 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  updateHeartMap:
+    handler: updateHeartMap.main
+    events:
+      - http:
+          path: heartMap
+          method: post
+          cors: true
+          authorizer: aws_iam
+  updateCurrentHR:
+    handler: updateCurrentHR.main
+    events:
+      - http:
+          path: currentHR
+          method: post
+          cors: true
+          authorizer: aws_iam
   postStepCount:
     handler: postStepCount.main
     events:
@@ -85,6 +101,22 @@ functions:
       - http:
           path: stepCount/{userId}
           method: get
+          cors: true
+          authorizer: aws_iam
+  updateStepsMap:
+    handler: updateStepsMap.main
+    events:
+      - http:
+          path: stepsMap
+          method: post
+          cors: true
+          authorizer: aws_iam
+  updateCurrentSteps:
+    handler: updateCurrentSteps.main
+    events:
+      - http:
+          path: currentSteps
+          method: post
           cors: true
           authorizer: aws_iam
   postStepCountGoals:
