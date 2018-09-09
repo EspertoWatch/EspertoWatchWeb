@@ -37,7 +37,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
 	state: {
 		heartRateData: {
-			avgHourlyHR: {},
+			rawHRData: {},
 			avgDailyHR: {}
 		},
 		stepCountData: {
@@ -202,14 +202,14 @@ export const store = new Vuex.Store({
 			return monthSteps;
 		},
 		getTodayHR: state => {
-			const keys = Object.keys(state.heartRateData.avgHourlyHR).map(Number);
+			const keys = Object.keys(state.heartRateData.rawHRData).map(Number);
 			const unixStart = moment().startOf('day').unix();
 			const unixEnd = moment().endOf('day').unix();
 			const todayUnixTimes = keys.filter(key => key <= unixEnd && key >= unixStart).sort((a, b) => a - b);
 
 			let todayHRs = [];
 			todayUnixTimes.forEach(function(timestamp){
-				todayHRs.push(state.heartRateData.avgHourlyHR[timestamp]);
+				todayHRs.push(state.heartRateData.rawHRData[timestamp]);
 			});
 			todayHRs.push(state.heartRateData.currentHR);
 
@@ -238,9 +238,9 @@ export const store = new Vuex.Store({
         GET_STEP_COUNT(state, stepCount){
             state.stepCountData = stepCount;
 			state.stepCountData.unit = "Steps";
-			state.stepCountData.rawStepData = stepCount.totalDailySteps;
+			state.stepCountData.rawStepData = stepCount.stepsMap;
 
-			const keys = Object.keys(stepCount.totalDailySteps);
+			const keys = Object.keys(stepCount.stepsMap);
 			let totDailySteps = {};
 			//the above object will store the avg daily HR for the past week
 			for(let i = 0; i < 30; i ++){
@@ -251,7 +251,7 @@ export const store = new Vuex.Store({
 
 				const stepCountsForDay = [];
 				dayUnixTimes.forEach(function(timestamp){
-					stepCountsForDay.push(stepCount.totalDailySteps[timestamp]);
+					stepCountsForDay.push(stepCount.stepsMap[timestamp]);
 				});
 				if(stepCountsForDay.length > 0){
 					totDailySteps[date] = Math.max(...stepCountsForDay);
@@ -261,10 +261,11 @@ export const store = new Vuex.Store({
 			state.stepCountData.totalDailySteps = totDailySteps;
         },
         GET_HEART_RATE(state, heartRate){
-            state.heartRateData = heartRate;
+            state.heartRateData.currentHR = heartRate.currentHR;
 			state.heartRateData.unit = "BPM";
+			state.heartRateData.rawHRData = heartRate.HRMap;
 			
-			const keys = Object.keys(heartRate.avgHourlyHR);
+			const keys = Object.keys(heartRate.HRMap);
 			let avgDailyHR = {};
 			//the above object will store the avg daily HR for the past week
 			for(let i = 0; i < 7; i ++){
@@ -276,13 +277,13 @@ export const store = new Vuex.Store({
 				let sum = 0;
 				let numVals = 0;
 				dayUnixTimes.forEach(function(timestamp){
-					sum = sum + heartRate.avgHourlyHR[timestamp];
+					sum = sum + heartRate.HRMap[timestamp];
 					numVals = numVals + 1;
 				});
 				avgDailyHR[date] = sum === 0 ? 0 : sum/numVals;
 			}
-
 			state.heartRateData.avgDailyHR = avgDailyHR;
+			debugger;
         },
 		LOGOUT_SUCCESS(state){
 			//reset to default state upon logout
