@@ -49,7 +49,10 @@ export default {
               fontSize: 18,
             },
             gridLines: {
-                display:false
+                display: false
+            },
+            ticks: {
+                display: !(this.timeFrame === "Today")
             }
           }],
           yAxes: [{
